@@ -5,7 +5,6 @@ import java.util.Locale;
 public class Board {
 
     static final int[] initial = { -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2 };
-
     protected Triangle[] triangles;
 
     public Board() {
@@ -14,6 +13,8 @@ public class Board {
             triangles[i] = new Triangle(initial[i]);
         }
     }
+
+    public Triangle getTriangle(int id) { return triangles[id]; }
 
     public boolean canRemoveWhites() {
         for (int i = 6; i < triangles.length; i++) {
