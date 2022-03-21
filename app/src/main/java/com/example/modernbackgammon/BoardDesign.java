@@ -13,17 +13,17 @@ import com.example.modernbackgammon.logic.Triangle;
 
 public class BoardDesign extends View {
 
-    Bitmap blackChip, whiteChip, background;
+    Bitmap background, blackChip, whiteChip;
     Board board;
 
     // canvas dimensions will stay updated.
     int canvasWidth = 0, canvasHeight = 0;
     final int CHIPS_IN_ROW = 12;
 
-    Triangle movingTriangle;
-    Bitmap movingChip;
+    Triangle movingTriangle = null;
+    Bitmap movingChip = null;
     int movingX, movingY;
-    boolean whitesTurn = true;
+    boolean whitesTurn = false;
 
     public BoardDesign(Context context) {
         super(context);
@@ -71,6 +71,8 @@ public class BoardDesign extends View {
                 if (triangle.countWhiteCheckers() == 0) triangle.addBlackChecker();
                 else movingTriangle.addBlackChecker();
             }
+
+            movingChip = null;
             movingTriangle = null;
         }
 
@@ -102,31 +104,38 @@ public class BoardDesign extends View {
     }
 
     public void drawMovingChecker(Canvas canvas) {
-        if (movingTriangle != null)
-            drawChips(canvas, movingChip,
+        if (movingTriangle != null) {
+            Bitmap[] chips = new Bitmap[1];
+            chips[0] = movingChip;
+            drawChips(canvas, chips,
                     movingX - (movingChip.getWidth()/2),
                     movingY - (movingChip.getHeight()/2),
                     0, 1);
+        }
 
     }
-    private void drawChips(Canvas canvas, Bitmap chip, int x, int y, int dy, int num) {
-        for (int i=0; i<num; i++) canvas.drawBitmap(chip, x, y + (i*dy), null);
+    private void drawChips(Canvas canvas, Bitmap[] chips, int x, int y, int dy, int num) {
+        for (int i=0; i<num; i++) canvas.drawBitmap(chips[i], x, y + (i*dy), null);
     }
 
     private void drawChipsTopRow(Canvas canvas, Bitmap chip, int x, int num) {
-        if (num == 0) return;
+        int y = 0, dy = 0;
         int height = (canvas.getHeight()/2) - chip.getHeight();
-        int dy = Math.min(chip.getHeight(), height/num);
-        int y = 0;
-        drawChips(canvas, chip, x, y, dy, num);
+        if (num != 0) dy = Math.min(chip.getHeight(), height/num);
+
+        Bitmap[] chips = new Bitmap[num];
+        for (int i=0; i<num; i++) chips[i] = chip;
+        drawChips(canvas, chips, x, y, dy, num);
     }
 
     private void drawChipsBottomRow(Canvas canvas, Bitmap chip, int x, int num) {
-        if (num == 0) return;
+        int dy=0, y = canvas.getHeight() - chip.getHeight();
         int height = canvas.getHeight()/2 - chip.getHeight();
-        int dy = - Math.min(chip.getHeight(), height/num);
-        int y = canvas.getHeight() - chip.getHeight();
-        drawChips(canvas, chip, x, y, dy, num);
+        if (num != 0) dy = -Math.min(chip.getHeight(), height/num);
+
+        Bitmap[] chips = new Bitmap[num];
+        for (int i=0; i<num; i++) chips[i] = chip;
+        drawChips(canvas, chips, x, y, dy, num);
     }
 
     // ----------------------------------------- HELPERS ---------------------------------------- //
@@ -147,5 +156,4 @@ public class BoardDesign extends View {
         blackChip = Bitmap.createScaledBitmap(blackChip, chipSize, chipSize, false);
         whiteChip = Bitmap.createScaledBitmap(whiteChip, chipSize, chipSize, false);
     }
-
 }
