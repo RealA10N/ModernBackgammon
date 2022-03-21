@@ -14,7 +14,10 @@ public class Board {
         }
     }
 
-    public Triangle getTriangle(int id) { return triangles[id]; }
+    public Triangle getTriangle(int id) {
+        if (id < 0 || id > triangles.length) return null;
+        return triangles[id];
+    }
 
     public boolean canRemoveWhites() {
         for (int i = 6; i < triangles.length; i++) {

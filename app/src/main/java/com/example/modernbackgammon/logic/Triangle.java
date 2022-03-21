@@ -26,10 +26,11 @@ public class Triangle {
         }
     }
 
+    public void clear() { value = 0; }
+    public int countCheckers() { return Math.abs(value); }
     public int countWhiteCheckers() {
         return Math.max(0, value);
     }
-
     public int countBlackCheckers() {
         return Math.max(0, -value);
     }
@@ -39,11 +40,9 @@ public class Triangle {
     public boolean isEmpty() {
         return value == 0;
     }
-
     public boolean hasWhiteCheckers() {
         return value > 0;
     }
-
     public boolean hasBlackCheckers() {
         return value < 0;
     }

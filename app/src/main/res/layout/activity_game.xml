@@ -15,4 +15,25 @@
         app:layout_constraintWidth_percent="0.8">
 
     </FrameLayout>
+
+    <Button
+        android:id="@+id/roller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="roll"
+        android:text="ROLL!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/container"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dicetext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/container"
+        app:layout_constraintTop_toBottomOf="@+id/roller" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
