@@ -50,12 +50,12 @@ public class BoardDesign extends View {
         movingX = (int) event.getX(); movingY = (int) event.getY();
         Triangle triangle = locationToTriangle(movingX, movingY);
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (triangle.hasWhiteCheckers() && whitesTurn) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN && triangle != null) {
+            if (triangle.hasWhiteCheckers() && board.isWhitesTurn()) {
                 movingChip = whiteChip;
                 movingTriangle = triangle;
                 triangle.removeWhiteChecker();
-            } else if (triangle.hasBlackCheckers() && !whitesTurn) {
+            } else if (triangle.hasBlackCheckers() && board.isBlacksTurn()) {
                 movingChip = blackChip;
                 movingTriangle = triangle;
                 triangle.removeBlackChecker();
@@ -63,12 +63,12 @@ public class BoardDesign extends View {
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP && movingTriangle != null) {
-            if (whitesTurn) {
-                if (triangle.countBlackCheckers() == 0) triangle.addWhiteChecker();
+            if (board.isWhitesTurn()) {
+                if (triangle != null && triangle.countBlackCheckers() == 0) triangle.addWhiteChecker();
                 else movingTriangle.addWhiteChecker();
             }
             else {
-                if (triangle.countWhiteCheckers() == 0) triangle.addBlackChecker();
+                if (triangle != null && triangle.countWhiteCheckers() == 0) triangle.addBlackChecker();
                 else movingTriangle.addBlackChecker();
             }
 
@@ -91,15 +91,15 @@ public class BoardDesign extends View {
 
         for (int i=0; i<CHIPS_IN_ROW; i++) {
             Triangle triangle = board.getTriangle(i);
-            drawChipsTopRow(canvas, blackChip, i*dx, triangle.countBlackCheckers());
-            drawChipsTopRow(canvas, whiteChip, i*dx, triangle.countWhiteCheckers());
+            if (triangle.hasBlackCheckers()) drawChipsTopRow(canvas, blackChip, i*dx, triangle.countBlackCheckers());
+            else drawChipsTopRow(canvas, whiteChip, i*dx, triangle.countWhiteCheckers());
         }
 
         for (int i=0; i<CHIPS_IN_ROW; i++) {
             int x = (CHIPS_IN_ROW - i - 1) * dx;
             Triangle triangle = board.getTriangle(CHIPS_IN_ROW + i);
-            drawChipsBottomRow(canvas, blackChip, x, triangle.countBlackCheckers());
-            drawChipsBottomRow(canvas, whiteChip, x, triangle.countWhiteCheckers());
+            if (triangle.hasBlackCheckers()) drawChipsBottomRow(canvas, blackChip,x, triangle.countBlackCheckers());
+            else drawChipsBottomRow(canvas, whiteChip,x, triangle.countWhiteCheckers());
         }
     }
 
@@ -141,6 +141,8 @@ public class BoardDesign extends View {
     // ----------------------------------------- HELPERS ---------------------------------------- //
 
     private Triangle locationToTriangle(int x, int y) {
+        if (x < 0 || x >= canvasWidth) return null;
+        if (y < 0 || y >= canvasHeight) return null;
         int i = (x * CHIPS_IN_ROW) / canvasWidth;
         int j = (y * 2) / canvasHeight;
         if (j==1) i = CHIPS_IN_ROW - i - 1;
