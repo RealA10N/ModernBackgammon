@@ -15,7 +15,7 @@ public class Board {
     }
 
     public Triangle getTriangle(int id) {
-        if (id < 0 || id > triangles.length) return null;
+        if (id < 0 || id >= triangles.length) return null;
         return triangles[id];
     }
 

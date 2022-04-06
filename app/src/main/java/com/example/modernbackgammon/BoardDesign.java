@@ -51,7 +51,6 @@ public class BoardDesign extends View {
         movingX = (int) event.getX(); movingY = (int) event.getY();
         int triangleId = locationToTriangleId(movingX, movingY);
         Triangle triangle = board.getTriangle(triangleId);
-        Log.d("ALON", String.format("tri:%d", triangleId));
 
         if (event.getAction() == MotionEvent.ACTION_DOWN && triangle != null) {
             if (board.isWhitesTurn() && triangle.hasWhiteCheckers()) {
@@ -98,7 +97,6 @@ public class BoardDesign extends View {
             if (move != null && move.from == CHIPS_IN_ROW + i) num--;
             if (triangle.hasBlackCheckers()) drawChipsBottomRow(canvas, blackChip, x, num);
             else drawChipsBottomRow(canvas, whiteChip, x, num);
-
         }
     }
 

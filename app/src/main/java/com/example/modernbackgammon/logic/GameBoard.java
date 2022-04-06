@@ -3,16 +3,19 @@ package com.example.modernbackgammon.logic;
 import androidx.annotation.NonNull;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class GameBoard extends Board {
 
     boolean whitesTurn;
+    Set<GameMove> moves;
 
     public GameBoard(boolean whitesStart) {
         super();
         whitesTurn = whitesStart;
     }
 
+    public void flipTurn() { whitesTurn = !whitesTurn; }
     public boolean isWhitesTurn() { return whitesTurn; }
     public boolean isBlacksTurn() { return !whitesTurn; }
 
@@ -34,8 +37,12 @@ public class GameBoard extends Board {
         return true;
     }
 
+    public void setAvailableMoves(int[] jumps) {
+        this.moves = getAvailableMoves(jumps);
+    }
+
     HashSet<GameMove> getAvailableMoves(int[] jumps) {
-        HashSet<GameMove> moves = new HashSet<GameMove>();
+        HashSet<GameMove> moves = new HashSet<>();
 
         for (int jump : jumps) {
             if (whitesTurn) jump *= -1;
@@ -49,7 +56,7 @@ public class GameBoard extends Board {
     }
 
     public boolean applyMove(@NonNull GameMove move) {
-        if (!isValidMove(move)) return false;
+        if (!moves.contains(move)) return false;
         Triangle from = getTriangle(move.from), to = getTriangle(move.to);
 
         if (isWhitesTurn()) {
@@ -64,7 +71,6 @@ public class GameBoard extends Board {
             to.addBlackChecker();
         }
 
-        whitesTurn = !whitesTurn;
         return true;
     }
 
