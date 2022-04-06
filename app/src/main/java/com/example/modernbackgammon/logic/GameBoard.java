@@ -45,11 +45,12 @@ public class GameBoard extends Board {
         return true;
     }
 
-    public void setAvailableMoves(int[] jumps) {
+    public void setAvailableMoves(@NonNull int[] jumps) {
         this.jumps = new ArrayList<>();
         for (int j : jumps) this.jumps.add(j);
     }
 
+    @NonNull
     private HashMap<GameMove, Integer> getAvailableMoves() {
         HashMap<GameMove, Integer> moves = new HashMap<>();
         for (int jump : jumps) {
@@ -82,8 +83,8 @@ public class GameBoard extends Board {
 
     public boolean applyMove(@NonNull GameMove move) {
         HashMap<GameMove, Integer> available = getAvailableMoves();
-        if (!available.containsKey(move)) return false;
-        int jump = available.get(move);
+        Integer jump = available.get(move);
+        if (jump == null) return false;
 
         Triangle from = getTriangle(move.from), to = getTriangle(move.to);
         boolean eats = false;
@@ -92,10 +93,6 @@ public class GameBoard extends Board {
             from.removeWhiteChecker();
             if (to.hasBlackCheckers()) { to.clear(); eats = true; }
             to.addWhiteChecker();
-        }
-        if (isWhitesTurn()) {
-            if (from.countWhiteCheckers() < 1) return false;
-            if (to.countBlackCheckers() > 1) return false;
         }
 
         if (isBlacksTurn()) {
@@ -106,7 +103,7 @@ public class GameBoard extends Board {
 
         GameMoveRecord record = new GameMoveRecord(from, to, jump, eats);
         movesStack.push(record);
-        jumps.remove(new Integer(jump));
+        jumps.remove(jump);
 
         return true;
     }
