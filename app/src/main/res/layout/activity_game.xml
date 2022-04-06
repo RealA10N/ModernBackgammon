@@ -36,4 +36,14 @@
         app:layout_constraintStart_toEndOf="@+id/container"
         app:layout_constraintTop_toBottomOf="@+id/roller" />
 
+    <Button
+        android:id="@+id/revert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="revert"
+        android:text="revert"
+        app:layout_constraintBottom_toTopOf="@+id/roller"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/container" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
