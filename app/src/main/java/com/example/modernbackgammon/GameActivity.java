@@ -35,10 +35,10 @@ public class GameActivity extends AppCompatActivity {
     public void roll(View btn) {
         TextView text = findViewById(R.id.dicetext);
         Random rnd = new Random();
-        int a = 1+rnd.nextInt(6);// b= 1+rnd.nextInt(6);
+        int a = 1+rnd.nextInt(6), b= 1+rnd.nextInt(6);
         board.flipTurn();
-        board.setAvailableMoves(new int[]{a});
-        text.setText(String.format("%s move %d", (board.isWhitesTurn()? "Whitred" : "Black"), a));
+        board.setAvailableMoves(new int[]{a,b });
+        text.setText(String.format("%s move %d, %d", (board.isWhitesTurn()? "Whitred" : "Black"), a, b));
     }
 
     public void revert(View btn) {

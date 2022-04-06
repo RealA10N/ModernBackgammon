@@ -2,13 +2,16 @@ package com.example.modernbackgammon.logic;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Stack;
 
 public class GameBoard extends Board {
 
     boolean whitesTurn;
-    int[] jumps;
+    ArrayList<Integer> jumps;
     Stack<GameMoveRecord> movesStack;
 
     public GameBoard(boolean whitesStart) {
@@ -43,16 +46,17 @@ public class GameBoard extends Board {
     }
 
     public void setAvailableMoves(int[] jumps) {
-        this.jumps = jumps;
+        this.jumps = new ArrayList<>();
+        for (int j : jumps) this.jumps.add(j);
     }
 
-    private HashSet<GameMove> getAvailableMoves() {
-        HashSet<GameMove> moves = new HashSet<>();
+    private HashMap<GameMove, Integer> getAvailableMoves() {
+        HashMap<GameMove, Integer> moves = new HashMap<>();
         for (int jump : jumps) {
             if (whitesTurn) jump *= -1;
             for (int i = 0; i < triangles.length; i++) {
                 GameMove move = new GameMove(i, i+jump);
-                if (isValidMove(move)) moves.add(move);
+                if (isValidMove(move)) moves.put(move, Math.abs(jump));
             }
         }
         return moves;
@@ -61,6 +65,7 @@ public class GameBoard extends Board {
     public boolean revertMove() {
         if (movesStack.empty()) return false;
         GameMoveRecord record = movesStack.pop();
+        jumps.add(record.jump);
 
         if (isWhitesTurn()) {
             record.to.removeWhiteChecker();
@@ -76,8 +81,9 @@ public class GameBoard extends Board {
     }
 
     public boolean applyMove(@NonNull GameMove move) {
-        HashSet<GameMove> available = getAvailableMoves();
-        if (!available.contains(move)) return false;
+        HashMap<GameMove, Integer> available = getAvailableMoves();
+        if (!available.containsKey(move)) return false;
+        int jump = available.get(move);
 
         Triangle from = getTriangle(move.from), to = getTriangle(move.to);
         boolean eats = false;
@@ -87,6 +93,10 @@ public class GameBoard extends Board {
             if (to.hasBlackCheckers()) { to.clear(); eats = true; }
             to.addWhiteChecker();
         }
+        if (isWhitesTurn()) {
+            if (from.countWhiteCheckers() < 1) return false;
+            if (to.countBlackCheckers() > 1) return false;
+        }
 
         if (isBlacksTurn()) {
             from.removeBlackChecker();
@@ -94,8 +104,9 @@ public class GameBoard extends Board {
             to.addBlackChecker();
         }
 
-        GameMoveRecord record = new GameMoveRecord(from, to, eats);
+        GameMoveRecord record = new GameMoveRecord(from, to, jump, eats);
         movesStack.push(record);
+        jumps.remove(new Integer(jump));
 
         return true;
     }
