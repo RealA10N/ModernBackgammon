@@ -10,21 +10,21 @@ import java.util.Stack;
 
 public class GameBoard extends Board {
 
-    boolean whitesTurn;
+    Boolean whitesTurn = null;
     ArrayList<Integer> jumps;
     Stack<GameMoveRecordGroup> movesStack;
     Hook updateHook;
 
-    public GameBoard(Hook updateHook, boolean whitesStart) {
+    public GameBoard(Hook updateHook) {
         super();
         this.updateHook = updateHook;
-        whitesTurn = whitesStart;
         movesStack = new Stack<>();
     }
 
-    public boolean isWhitesTurn() { return whitesTurn; }
-    public boolean isBlacksTurn() { return !whitesTurn; }
+    public boolean isWhitesTurn() { return whitesTurn != null && whitesTurn; }
+    public boolean isBlacksTurn() { return whitesTurn != null && !whitesTurn; }
     public void flipTurn() {
+        if (whitesTurn == null) whitesTurn = true;
         whitesTurn = !whitesTurn;
         movesStack = new Stack<>();
     }

@@ -37,7 +37,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        board = new GameBoard(new GameActivityUpdateHook(this), true);
+        board = new GameBoard(new GameActivityUpdateHook(this));
         displayBoard = new BoardDesign(this, board);
         container = findViewById(R.id.container);
         container.addView(displayBoard);
