@@ -51,11 +51,12 @@ public class GameBoard extends Board {
         return true;
     }
 
-    public void setAvailableMoves(@NonNull int[] jumps) {
-        this.jumps = new ArrayList<>();
-        for (int j : jumps) this.jumps.add(j);
+    public void setAvailableJumps(ArrayList<Integer> jumps) {
+        this.jumps = new ArrayList<>(jumps);
         updateHook.trigger();
     }
+
+    public ArrayList<Integer> getAvailableJumps() { return new ArrayList<>(jumps); }
 
     @NonNull
     private HashMap<GameMove, Integer> getAvailableMoves() {
