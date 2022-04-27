@@ -2,10 +2,10 @@ package com.example.modernbackgammon.logic;
 
 import androidx.annotation.NonNull;
 
+import com.example.modernbackgammon.general.Hook;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Stack;
 
 public class GameBoard extends Board {
@@ -13,9 +13,11 @@ public class GameBoard extends Board {
     boolean whitesTurn;
     ArrayList<Integer> jumps;
     Stack<GameMoveRecord> movesStack;
+    Hook updateHook;
 
-    public GameBoard(boolean whitesStart) {
+    public GameBoard(Hook updateHook, boolean whitesStart) {
         super();
+        this.updateHook = updateHook;
         whitesTurn = whitesStart;
         movesStack = new Stack<>();
     }
@@ -25,6 +27,10 @@ public class GameBoard extends Board {
     public void flipTurn() {
         whitesTurn = !whitesTurn;
         movesStack = new Stack<>();
+    }
+
+    public boolean isEndTurn() {
+        return jumps == null || jumps.size() == 0;
     }
 
     public boolean isValidMove(GameMove move) {
@@ -48,6 +54,7 @@ public class GameBoard extends Board {
     public void setAvailableMoves(@NonNull int[] jumps) {
         this.jumps = new ArrayList<>();
         for (int j : jumps) this.jumps.add(j);
+        updateHook.trigger();
     }
 
     @NonNull
@@ -78,6 +85,7 @@ public class GameBoard extends Board {
             if (record.eats) record.to.addWhiteChecker();
         }
 
+        updateHook.trigger();
         return true;
     }
 
@@ -104,7 +112,7 @@ public class GameBoard extends Board {
         GameMoveRecord record = new GameMoveRecord(from, to, jump, eats);
         movesStack.push(record);
         jumps.remove(jump);
-
+        updateHook.trigger();
         return true;
     }
 
