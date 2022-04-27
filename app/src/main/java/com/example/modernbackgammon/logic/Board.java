@@ -5,18 +5,40 @@ import java.util.Locale;
 public class Board {
 
     static final int[] initial = { -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2 };
+    static final int coloredCheckers = 15;
     protected Triangle[] triangles;
+    protected Triangle whiteHome, blackHome, whiteEnd, blackEnd;
+
 
     public Board() {
         triangles = new Triangle[initial.length];
         for (int i = 0; i < initial.length; i++) {
             triangles[i] = new Triangle(initial[i]);
         }
+
+        whiteHome = new Triangle(0);
+        blackHome = new Triangle(0);
+        whiteEnd = new Triangle(0);
+        blackEnd = new Triangle(0);
     }
 
     public Triangle getTriangle(int id) {
         if (id < 0 || id >= triangles.length) return null;
         return triangles[id];
+    }
+
+    public int countHomeWhites() { return whiteHome.countCheckers(); }
+    public boolean hasHomeWhites() {
+        return !whiteHome.isEmpty();
+    }
+
+    public int countHomeBlacks() { return blackHome.countCheckers(); }
+    public boolean hasHomeBlacks() {
+        return !blackHome.isEmpty();
+    }
+
+    public boolean isEndGame() {
+        return whiteEnd.countCheckers() == coloredCheckers || blackEnd.countCheckers() == coloredCheckers;
     }
 
     public boolean canRemoveWhites() {

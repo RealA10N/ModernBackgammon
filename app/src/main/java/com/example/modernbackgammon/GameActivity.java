@@ -60,5 +60,7 @@ public class GameActivity extends AppCompatActivity {
         displayBoard.invalidate();
         Button roll = findViewById(R.id.roller);
         roll.setEnabled(board.isEndTurn());
+        TextView house = findViewById(R.id.hometext);
+        house.setText(String.format("Eaten: %d whites, %d blacks", board.countHomeWhites(), board.countHomeBlacks()));
     }
 }

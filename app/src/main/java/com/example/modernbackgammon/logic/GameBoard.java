@@ -12,7 +12,7 @@ public class GameBoard extends Board {
 
     boolean whitesTurn;
     ArrayList<Integer> jumps;
-    Stack<GameMoveRecord> movesStack;
+    Stack<GameMoveRecordGroup> movesStack;
     Hook updateHook;
 
     public GameBoard(Hook updateHook, boolean whitesStart) {
@@ -72,19 +72,7 @@ public class GameBoard extends Board {
 
     public boolean revertMove() {
         if (movesStack.empty()) return false;
-        GameMoveRecord record = movesStack.pop();
-        jumps.add(record.jump);
-
-        if (isWhitesTurn()) {
-            record.to.removeWhiteChecker();
-            record.from.addWhiteChecker();
-            if (record.eats) record.to.addBlackChecker();
-        } else {
-            record.to.removeBlackChecker();
-            record.from.addBlackChecker();
-            if (record.eats) record.to.addWhiteChecker();
-        }
-
+        movesStack.pop().revertMoves(jumps);
         updateHook.trigger();
         return true;
     }
@@ -94,24 +82,18 @@ public class GameBoard extends Board {
         Integer jump = available.get(move);
         if (jump == null) return false;
 
+        GameMoveRecordGroup movesGroup = new GameMoveRecordGroup();
         Triangle from = getTriangle(move.from), to = getTriangle(move.to);
-        boolean eats = false;
 
-        if (isWhitesTurn()) {
-            from.removeWhiteChecker();
-            if (to.hasBlackCheckers()) { to.clear(); eats = true; }
-            to.addWhiteChecker();
-        }
+        if (isWhitesTurn() && to.hasBlackCheckers())
+            movesGroup.push(new GameMoveRecord(to, blackHome, false));
 
-        if (isBlacksTurn()) {
-            from.removeBlackChecker();
-            if (to.hasWhiteCheckers()) { to.clear(); eats = true; }
-            to.addBlackChecker();
-        }
+        if (isBlacksTurn() && to.hasWhiteCheckers())
+            movesGroup.push(new GameMoveRecord(to, whiteHome, true));
 
-        GameMoveRecord record = new GameMoveRecord(from, to, jump, eats);
-        movesStack.push(record);
-        jumps.remove(jump);
+        movesGroup.push(new GameMoveRecord(from, to, isWhitesTurn(), jump));
+        movesGroup.applyMoves(jumps);
+        movesStack.push(movesGroup);
         updateHook.trigger();
         return true;
     }
