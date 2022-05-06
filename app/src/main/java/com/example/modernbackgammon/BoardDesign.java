@@ -3,7 +3,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -13,14 +12,18 @@ import com.example.modernbackgammon.logic.GameBoard;
 import com.example.modernbackgammon.logic.GameMove;
 import com.example.modernbackgammon.logic.Triangle;
 
+import java.util.Date;
+
 public class BoardDesign extends View {
 
-    Bitmap background, blackChip, whiteChip;
+    Bitmap background, blackChip, whiteChip, highlightImg;
     GameBoard board;
 
     // canvas dimensions will stay updated.
     int canvasWidth = 0, canvasHeight = 0;
     final int CHIPS_IN_ROW = 12;
+
+    long last_touch_down = 0;
 
     GameMove move = null;
     Bitmap movingChip = null;
@@ -32,6 +35,7 @@ public class BoardDesign extends View {
         background = BitmapFactory.decodeResource(getResources(), R.drawable.gameboard);
         blackChip = BitmapFactory.decodeResource(getResources(), R.drawable.default_black_chip);
         whiteChip = BitmapFactory.decodeResource(getResources(), R.drawable.default_red_chip);
+        // highlight: TODO
     }
 
     // --------------------------------------- LISTENERS ---------------------------------------- //
@@ -42,30 +46,47 @@ public class BoardDesign extends View {
         super.onDraw(canvas);
         resizeBitmaps(canvas);
         drawBackground(canvas);
+        drawHighlights(canvas);
         drawBoardCheckers(canvas);
         drawMovingChecker(canvas);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        long time = new Date().getTime();
+
         movingX = (int) event.getX(); movingY = (int) event.getY();
         int triangleId = locationToTriangleId(movingX, movingY);
         Triangle triangle = board.getTriangle(triangleId);
 
         if (event.getAction() == MotionEvent.ACTION_DOWN && triangle != null) {
-            if (board.isWhitesTurn() && triangle.hasWhiteCheckers()) {
-                movingChip = whiteChip;
-                move = new GameMove(triangle, null);
-            } else if (board.isBlacksTurn() && triangle.hasBlackCheckers()) {
-                movingChip = blackChip;
-                move = new GameMove(triangle, null);
+            if (move != null) {
+                // if starting point is already selected
+                move.to = triangle;
+                board.applyMove(move);
+                move=null;
+                movingChip = null;
+
+            } else {
+                // if a start of a new move
+                last_touch_down = time;
+                if (board.isWhitesTurn() && triangle.hasWhiteCheckers()) {
+                    movingChip = whiteChip;
+                    move = new GameMove(triangle, null);
+                } else if (board.isBlacksTurn() && triangle.hasBlackCheckers()) {
+                    movingChip = blackChip;
+                    move = new GameMove(triangle, null);
+                }
             }
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP && triangle != null && move != null) {
-            move.to = triangle;
-            board.applyMove(move);
-            move = null;
+            if (time - last_touch_down >= 100) {
+                move.to = triangle;
+                board.applyMove(move);
+                move = null;
+                last_touch_down = 0;
+            }
             movingChip = null;
         }
 
@@ -85,7 +106,7 @@ public class BoardDesign extends View {
         for (int i=0; i<CHIPS_IN_ROW; i++) {
             Triangle triangle = board.getTriangle(i);
             int num = triangle.countCheckers();
-            if (move != null && move.from == board.getTriangle(i)) num--;
+            if (movingChip != null && move.from == board.getTriangle(i)) num--;
             if (triangle.hasBlackCheckers()) drawChipsTopRow(canvas, blackChip, i*dx, num);
             else drawChipsTopRow(canvas, whiteChip, i*dx, num);
         }
@@ -94,7 +115,7 @@ public class BoardDesign extends View {
             int x = (CHIPS_IN_ROW - i - 1) * dx;
             Triangle triangle = board.getTriangle(CHIPS_IN_ROW + i);
             int num = triangle.countCheckers();
-            if (move != null && move.from == board.getTriangle(CHIPS_IN_ROW + i)) num--;
+            if (movingChip != null && move.from == board.getTriangle(CHIPS_IN_ROW + i)) num--;
             if (triangle.hasBlackCheckers()) drawChipsBottomRow(canvas, blackChip, x, num);
             else drawChipsBottomRow(canvas, whiteChip, x, num);
         }
@@ -109,8 +130,14 @@ public class BoardDesign extends View {
                     movingY - (movingChip.getHeight()/2),
                     0, 1);
         }
-
     }
+
+    private void drawHighlights(Canvas canvas) {
+        if (move == null || move.from == null) return;
+        canvas.drawBitmap(whiteChip, 100,100,null);
+        // highlight: TODO
+    }
+
     private void drawChips(Canvas canvas, Bitmap[] chips, int x, int y, int dy, int num) {
         for (int i=0; i<num; i++) canvas.drawBitmap(chips[i], x, y + (i*dy), null);
     }
@@ -153,5 +180,6 @@ public class BoardDesign extends View {
         int chipSize = canvasWidth / CHIPS_IN_ROW;
         blackChip = Bitmap.createScaledBitmap(blackChip, chipSize, chipSize, false);
         whiteChip = Bitmap.createScaledBitmap(whiteChip, chipSize, chipSize, false);
+//        highlightImg = Bitmap.createScaledBitmap(highlightImg, chipSize, canvasHeight/2, false); TODO
     }
 }
