@@ -4,9 +4,9 @@ package com.example.modernbackgammon.logic;
 import java.util.Objects;
 
 public class GameMove {
-    public int from, to;
+    public Triangle from, to;
 
-    public GameMove(int from, int to) {
+    public GameMove(Triangle from, Triangle to) {
         this.from = from;
         this.to = to;
     }

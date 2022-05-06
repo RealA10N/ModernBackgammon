@@ -55,15 +55,15 @@ public class BoardDesign extends View {
         if (event.getAction() == MotionEvent.ACTION_DOWN && triangle != null) {
             if (board.isWhitesTurn() && triangle.hasWhiteCheckers()) {
                 movingChip = whiteChip;
-                move = new GameMove(triangleId, -1);
+                move = new GameMove(triangle, null);
             } else if (board.isBlacksTurn() && triangle.hasBlackCheckers()) {
                 movingChip = blackChip;
-                move = new GameMove(triangleId, -1);
+                move = new GameMove(triangle, null);
             }
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP && triangle != null && move != null) {
-            move.to = triangleId;
+            move.to = triangle;
             board.applyMove(move);
             move = null;
             movingChip = null;
@@ -85,7 +85,7 @@ public class BoardDesign extends View {
         for (int i=0; i<CHIPS_IN_ROW; i++) {
             Triangle triangle = board.getTriangle(i);
             int num = triangle.countCheckers();
-            if (move != null && move.from == i) num--;
+            if (move != null && move.from == board.getTriangle(i)) num--;
             if (triangle.hasBlackCheckers()) drawChipsTopRow(canvas, blackChip, i*dx, num);
             else drawChipsTopRow(canvas, whiteChip, i*dx, num);
         }
@@ -94,7 +94,7 @@ public class BoardDesign extends View {
             int x = (CHIPS_IN_ROW - i - 1) * dx;
             Triangle triangle = board.getTriangle(CHIPS_IN_ROW + i);
             int num = triangle.countCheckers();
-            if (move != null && move.from == CHIPS_IN_ROW + i) num--;
+            if (move != null && move.from == board.getTriangle(CHIPS_IN_ROW + i)) num--;
             if (triangle.hasBlackCheckers()) drawChipsBottomRow(canvas, blackChip, x, num);
             else drawChipsBottomRow(canvas, whiteChip, x, num);
         }
