@@ -52,12 +52,18 @@ public class GameActivity extends AppCompatActivity {
         for (int i=0; i <= (a==b? 1 : 0); i++) {
             jumps.add(a); jumps.add(b);
         }
+
         board.setAvailableJumps(jumps);
+        if (board.isEndTurn()) Toast.makeText(this, "No moves available!", Toast.LENGTH_SHORT).show();
     }
 
     public void revert(View btn) {
         if (!board.revertMove()) Toast.makeText(this, "No moves to revert!", Toast.LENGTH_SHORT).show();
         update();
+    }
+
+    public void homeClick(View btn) {
+        displayBoard.onHomeClick();
     }
 
     public void update() {
@@ -74,9 +80,8 @@ public class GameActivity extends AppCompatActivity {
             s += String.format("%d ", jump);
         }
         text.setText(s);
+
+        displayBoard.setEnabled(!board.isEndTurn());
     }
 
-    public void homeClick(View btn) {
-        displayBoard.onHomeClick();
-    }
 }

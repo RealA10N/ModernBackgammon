@@ -30,7 +30,7 @@ public class GameBoard extends Board {
     }
 
     public boolean isEndTurn() {
-        return jumps == null || jumps.size() == 0;
+        return jumps == null || jumps.size() == 0 || getAvailableMoves().isEmpty();
     }
 
     public boolean isValidMove(GameMove move) {

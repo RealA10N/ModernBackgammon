@@ -29,6 +29,8 @@ public class BoardDesign extends View {
     Bitmap movingChip = null;
     int movingX, movingY;
 
+    private boolean state_enabled = true;
+
     public BoardDesign(Context context, GameBoard board) {
         super(context);
         this.board = board;
@@ -37,6 +39,9 @@ public class BoardDesign extends View {
         whiteChip = BitmapFactory.decodeResource(getResources(), R.drawable.default_red_chip);
         // highlight: TODO
     }
+
+    public void setEnabled(boolean enabled) { state_enabled = enabled; }
+    public boolean isEnabled() { return state_enabled; }
 
     // --------------------------------------- LISTENERS ---------------------------------------- //
 
@@ -53,6 +58,7 @@ public class BoardDesign extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!isEnabled()) return true;
         long time = new Date().getTime();
 
         movingX = (int) event.getX(); movingY = (int) event.getY();
