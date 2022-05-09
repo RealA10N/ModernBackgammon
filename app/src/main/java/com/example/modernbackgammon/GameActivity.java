@@ -82,6 +82,8 @@ public class GameActivity extends AppCompatActivity {
         text.setText(s);
 
         displayBoard.setEnabled(!board.isEndTurn());
+
+        if (board.isEndGame()) Toast.makeText(this, "GG!", Toast.LENGTH_SHORT).show();
     }
 
 }

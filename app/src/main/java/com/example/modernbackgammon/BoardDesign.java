@@ -101,11 +101,17 @@ public class BoardDesign extends View {
     }
 
     public void onHomeClick() {
-        if (move != null && movingChip == null) {
+        if (move != null) {
+            // move some checkers to end triangles
+            if (movingChip == null) return;
             if (board.isWhitesTurn()) move.to = board.whiteEnd;
             else move.to = board.blackEnd;
             board.applyMove(move);
             move = null;
+        } else {
+            // move eaten checkers from home to board
+            Triangle start = (board.isWhitesTurn()? board.whiteHome : board.blackHome);
+            move = new GameMove(start, null);
         }
     }
 

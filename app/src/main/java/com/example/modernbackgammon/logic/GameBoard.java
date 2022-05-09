@@ -62,22 +62,34 @@ public class GameBoard extends Board {
     private HashMap<GameMove, Integer> getAvailableMoves() {
         HashMap<GameMove, Integer> moves = new HashMap<>();
 
-        Triangle end; int starti, delta, endi;
-        if (isWhitesTurn()) { end = whiteEnd; starti = triangles.length-1; delta = -1; endi = -1; }
-        else { end = blackEnd; starti = 0; delta = 1; endi = triangles.length; }
+        Triangle end, home; int starti, delta, endi;
+        if (isWhitesTurn()) { end = whiteEnd; home = whiteHome; starti = triangles.length-1; delta = -1; endi = -1; }
+        else { end = blackEnd; home = blackHome; starti = 0; delta = 1; endi = triangles.length; }
 
-        boolean seen = false;
-        for (int i = starti; i != endi; i += delta) {
+        if ((isWhitesTurn() && !whiteHome.isEmpty()) || isBlacksTurn() && !blackHome.isEmpty()) {
+            // can't move regularly, has checkers that need to be pulled out of home
+
             for (int jump : jumps) {
-                GameMove move = new GameMove(getTriangle(i), getTriangle(i+(jump*delta)));
-                if (move.to == null) {
-                    move.to = end;
-                    Triangle before = getTriangle(i+((jump-1)*delta));
-                    if ((!seen || before != null) && isValidMove(move)) moves.put(move, jump);
-                } else if (isValidMove(move)) moves.put(move, Math.abs(jump));
+                GameMove move = new GameMove(home, getTriangle(starti+((jump-1)*delta)));
+                if (isValidMove(move)) moves.put(move, jump);
+            }
 
-                if (isWhitesTurn() && getTriangle(i).hasWhiteCheckers()) seen = true;
-                if (isBlacksTurn() && getTriangle(i).hasBlackCheckers()) seen = true;
+        } else {
+            // regular moves
+
+            boolean seen = false;
+            for (int i = starti; i != endi; i += delta) {
+                for (int jump : jumps) {
+                    GameMove move = new GameMove(getTriangle(i), getTriangle(i+(jump*delta)));
+                    if (move.to == null) {
+                        move.to = end;
+                        Triangle before = getTriangle(i+((jump-1)*delta));
+                        if ((!seen || before != null) && isValidMove(move)) moves.put(move, jump);
+                    } else if (isValidMove(move)) moves.put(move, Math.abs(jump));
+
+                    if (isWhitesTurn() && getTriangle(i).hasWhiteCheckers()) seen = true;
+                    if (isBlacksTurn() && getTriangle(i).hasBlackCheckers()) seen = true;
+                }
             }
         }
 
