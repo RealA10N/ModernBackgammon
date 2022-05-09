@@ -7,8 +7,7 @@ public class Board {
     static final int[] initial = { -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2 };
     static final int coloredCheckers = 15;
     protected Triangle[] triangles;
-    protected Triangle whiteHome, blackHome, whiteEnd, blackEnd;
-
+    public Triangle whiteHome, blackHome, whiteEnd, blackEnd;
 
     public Board() {
         triangles = new Triangle[initial.length];

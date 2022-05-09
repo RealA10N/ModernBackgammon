@@ -64,7 +64,7 @@ public class BoardDesign extends View {
                 // if starting point is already selected
                 move.to = triangle;
                 board.applyMove(move);
-                move=null;
+                move = null;
                 movingChip = null;
 
             } else {
@@ -92,6 +92,15 @@ public class BoardDesign extends View {
 
         invalidate();
         return true;
+    }
+
+    public void onHomeClick() {
+        if (move != null && movingChip == null) {
+            if (board.isWhitesTurn()) move.to = board.whiteEnd;
+            else move.to = board.blackEnd;
+            board.applyMove(move);
+            move = null;
+        }
     }
 
     // ---------------------------------------- DRAWERS ----------------------------------------- //

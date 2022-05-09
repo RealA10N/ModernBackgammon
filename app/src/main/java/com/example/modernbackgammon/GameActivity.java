@@ -75,4 +75,8 @@ public class GameActivity extends AppCompatActivity {
         }
         text.setText(s);
     }
+
+    public void homeClick(View btn) {
+        displayBoard.onHomeClick();
+    }
 }
