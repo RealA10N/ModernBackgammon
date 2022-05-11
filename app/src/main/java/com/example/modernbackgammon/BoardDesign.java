@@ -103,7 +103,6 @@ public class BoardDesign extends View {
     public void onHomeClick() {
         if (move != null) {
             // move some checkers to end triangles
-            if (movingChip == null) return;
             if (board.isWhitesTurn()) move.to = board.whiteEnd;
             else move.to = board.blackEnd;
             board.applyMove(move);
