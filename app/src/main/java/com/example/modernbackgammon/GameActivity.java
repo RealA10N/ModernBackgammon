@@ -2,6 +2,7 @@ package com.example.modernbackgammon;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,16 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        buildActivity();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        buildActivity();
+    }
+
+    protected void buildActivity() {
         board = new GameBoard(new GameActivityUpdateHook(this));
         displayBoard = new BoardDesign(this, board);
         container = findViewById(R.id.container);
@@ -82,8 +93,29 @@ public class GameActivity extends AppCompatActivity {
         text.setText(s);
 
         displayBoard.setEnabled(!board.isEndTurn());
+        if (board.isEndGame()) onGameEnd();
+    }
 
-        if (board.isEndGame()) Toast.makeText(this, "GG!", Toast.LENGTH_SHORT).show();
+    public void onGameEnd() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.game_end_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        TextView title = dialog.findViewById(R.id.end_game_dialog_winner);
+        title.setText((board.isWhiteWin()? "White" : "Black"));
+
+        Button home = dialog.findViewById(R.id.end_game_dialog_home_btn);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { finish(); dialog.dismiss(); }
+        });
+
+        Button newgame = dialog.findViewById(R.id.end_game_new_game_btn);
+        newgame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { onRestart(); dialog.dismiss(); }
+        });
     }
 
 }

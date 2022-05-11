@@ -5,7 +5,6 @@ import java.util.Locale;
 public class Board {
 
     static final int[] initial = { -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2 };
-    static final int coloredCheckers = 15;
     protected Triangle[] triangles;
     public Triangle whiteHome, blackHome, whiteEnd, blackEnd;
 
@@ -36,8 +35,20 @@ public class Board {
         return !blackHome.isEmpty();
     }
 
+    public boolean isWhiteWin() {
+        for (int i = 0; i < initial.length; i++)
+            if (getTriangle(i).countWhiteCheckers() > 0) return false;
+        return whiteHome.countCheckers() == 0;
+    }
+
+    public boolean isBlackWin() {
+        for (int i = 0; i < initial.length; i++)
+            if (getTriangle(i).countBlackCheckers() > 0) return false;
+        return blackHome.countCheckers() == 0;
+    }
+
     public boolean isEndGame() {
-        return whiteEnd.countCheckers() == coloredCheckers || blackEnd.countCheckers() == coloredCheckers;
+        return isBlackWin() || isWhiteWin();
     }
 
     public boolean canRemoveWhites() {
