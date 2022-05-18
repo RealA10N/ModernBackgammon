@@ -11,38 +11,24 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.modernbackgammon.general.Hook;
+import com.example.modernbackgammon.general.GameActivityUpdateHook;
+import com.example.modernbackgammon.general.GameStateStorage;
 import com.example.modernbackgammon.logic.GameBoard;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-class GameActivityUpdateHook extends Hook {
-    GameActivity activity;
-    GameActivityUpdateHook(GameActivity activity) {
-        this.activity = activity;
-    }
-
-    @Override
-    public void trigger() {
-        this.activity.update();
-    }
-}
 
 public class GameActivity extends AppCompatActivity {
 
     protected GameBoard board;
     protected BoardDesign displayBoard;
     protected FrameLayout container;
-    protected SharedPreferences sp;
-
-    private final String SP_KEY = "gamestate";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        sp=getSharedPreferences("game", MODE_PRIVATE);
         buildActivity();
     }
 
@@ -53,9 +39,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     protected void buildActivity() {
-        String repr = sp.getString(SP_KEY, "");
-        if (repr.isEmpty()) board = new GameBoard(new GameActivityUpdateHook(this));
-        else board = new GameBoard(new GameActivityUpdateHook(this), repr);
+        board = GameStateStorage.loadGameBoard(new GameActivityUpdateHook(this));
         displayBoard = new BoardDesign(this, board);
         container = findViewById(R.id.container);
         container.addView(displayBoard);
@@ -75,7 +59,7 @@ public class GameActivity extends AppCompatActivity {
         board.setAvailableJumps(jumps);
         if (board.isEndTurn()) Toast.makeText(this, "No moves available!", Toast.LENGTH_SHORT).show();
 
-        saveGameState();
+        GameStateStorage.storeGameBoardState(board);
     }
 
     public void revert(View btn) {
@@ -85,18 +69,6 @@ public class GameActivity extends AppCompatActivity {
 
     public void homeClick(View btn) {
         displayBoard.onHomeClick();
-    }
-
-    protected void saveGameState() {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(SP_KEY, board.repr());
-        editor.commit();
-    }
-
-    protected void deleteSavedGameState() {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(SP_KEY, "");
-        editor.commit();
     }
 
     public void update() {
@@ -119,7 +91,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onGameEnd() {
-        deleteSavedGameState();
+        GameStateStorage.resetGameBoardState();
 
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.game_end_dialog);

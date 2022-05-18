@@ -5,11 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.modernbackgammon.logic.Die;
+import com.example.modernbackgammon.general.GameStateStorage;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,10 +14,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GameStateStorage.loadDatabase(this);
     }
 
-    public void click(View view) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        findViewById(R.id.resume_game_btn).setVisibility(
+                (GameStateStorage.hasGameStored()? View.VISIBLE : View.INVISIBLE)
+        );
+    }
+
+    public void newGame(View view) {
+        GameStateStorage.resetGameBoardState();
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
+
+    public void resumeGame(View view) {
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
+    }
+
 }
