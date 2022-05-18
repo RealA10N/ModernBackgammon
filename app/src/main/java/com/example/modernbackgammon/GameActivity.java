@@ -3,6 +3,7 @@ package com.example.modernbackgammon;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,11 +34,15 @@ public class GameActivity extends AppCompatActivity {
     protected GameBoard board;
     protected BoardDesign displayBoard;
     protected FrameLayout container;
+    protected SharedPreferences sp;
+
+    private final String SP_KEY = "gamestate";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        sp=getSharedPreferences("game", MODE_PRIVATE);
         buildActivity();
     }
 
@@ -48,13 +53,17 @@ public class GameActivity extends AppCompatActivity {
     }
 
     protected void buildActivity() {
-        board = new GameBoard(new GameActivityUpdateHook(this));
+        String repr = sp.getString(SP_KEY, "");
+        if (repr.isEmpty()) board = new GameBoard(new GameActivityUpdateHook(this));
+        else board = new GameBoard(new GameActivityUpdateHook(this), repr);
         displayBoard = new BoardDesign(this, board);
         container = findViewById(R.id.container);
         container.addView(displayBoard);
     }
 
     public void roll(View btn) {
+        saveGameState();
+
         Random rnd = new Random();
         int a = 1+rnd.nextInt(6), b= 1+rnd.nextInt(6);
         board.flipTurn();
@@ -77,6 +86,18 @@ public class GameActivity extends AppCompatActivity {
         displayBoard.onHomeClick();
     }
 
+    protected void saveGameState() {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(SP_KEY, board.repr());
+        editor.commit();
+    }
+
+    protected void deleteSavedGameState() {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(SP_KEY, "");
+        editor.commit();
+    }
+
     public void update() {
         displayBoard.invalidate();
         Button roll = findViewById(R.id.roller);
@@ -97,6 +118,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onGameEnd() {
+        deleteSavedGameState();
+
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.game_end_dialog);
         dialog.setCancelable(false);

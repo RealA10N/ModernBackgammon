@@ -7,6 +7,7 @@ import com.example.modernbackgammon.general.Hook;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.StringJoiner;
 
 public class GameBoard extends Board {
 
@@ -19,6 +20,40 @@ public class GameBoard extends Board {
         super();
         this.updateHook = updateHook;
         movesStack = new Stack<>();
+    }
+
+    public GameBoard(Hook updateHook, String repr) {
+        this(updateHook);
+        String[] sections = repr.split("!");
+
+        whitesTurn = (sections[0] == "1" ? true : false);
+
+        int i = 0;
+        for (String s : sections[1].split(",")) {
+            triangles[i++] = new Triangle(Integer.parseInt(s));
+        }
+
+        String[] specials = sections[2].split(",");
+        whiteHome = new Triangle(Integer.parseInt(specials[0]));
+        whiteEnd = new Triangle(Integer.parseInt(specials[1]));
+        blackHome = new Triangle(Integer.parseInt(specials[2]));
+        blackEnd = new Triangle(Integer.parseInt(specials[3]));
+    }
+
+    public String repr() {
+        StringJoiner sections = new StringJoiner("!");
+        sections.add(isWhitesTurn()? "1" : "0");
+
+        StringJoiner boardSection = new StringJoiner(",");
+        for (int i = 0; i < triangles.length; i++) boardSection.add(getTriangle(i).repr());
+        sections.add(boardSection.toString());
+
+        StringJoiner specialSection = new StringJoiner(",");
+        for (Triangle t : new Triangle[]{whiteHome, whiteEnd, blackHome, blackEnd})
+            specialSection.add(t.repr());
+        sections.add(specialSection.toString());
+
+        return sections.toString();
     }
 
     public boolean isWhitesTurn() { return whitesTurn != null && whitesTurn; }

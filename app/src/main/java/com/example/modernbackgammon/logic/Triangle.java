@@ -26,6 +26,10 @@ public class Triangle {
         }
     }
 
+    public String repr() {
+        return Integer.toString(value);
+    }
+
     public void clear() { value = 0; }
     public int countCheckers() { return Math.abs(value); }
     public int countWhiteCheckers() {
