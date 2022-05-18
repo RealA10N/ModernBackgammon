@@ -20,6 +20,7 @@ public class GameBoard extends Board {
         super();
         this.updateHook = updateHook;
         movesStack = new Stack<>();
+        jumps = new ArrayList<>();
     }
 
     public GameBoard(Hook updateHook, String repr) {
@@ -38,6 +39,9 @@ public class GameBoard extends Board {
         whiteEnd = new Triangle(Integer.parseInt(specials[1]));
         blackHome = new Triangle(Integer.parseInt(specials[2]));
         blackEnd = new Triangle(Integer.parseInt(specials[3]));
+
+        jumps = new ArrayList<>();
+        for (String j : sections[3].split(",")) jumps.add(Integer.parseInt(j));
     }
 
     public String repr() {
@@ -52,6 +56,10 @@ public class GameBoard extends Board {
         for (Triangle t : new Triangle[]{whiteHome, whiteEnd, blackHome, blackEnd})
             specialSection.add(t.repr());
         sections.add(specialSection.toString());
+
+        StringJoiner jumpsSection = new StringJoiner(",");
+        for (int j : jumps) jumpsSection.add(Integer.toString(j));
+        sections.add(jumpsSection.toString());
 
         return sections.toString();
     }

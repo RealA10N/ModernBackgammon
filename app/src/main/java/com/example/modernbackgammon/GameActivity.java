@@ -59,11 +59,10 @@ public class GameActivity extends AppCompatActivity {
         displayBoard = new BoardDesign(this, board);
         container = findViewById(R.id.container);
         container.addView(displayBoard);
+        update();
     }
 
     public void roll(View btn) {
-        saveGameState();
-
         Random rnd = new Random();
         int a = 1+rnd.nextInt(6), b= 1+rnd.nextInt(6);
         board.flipTurn();
@@ -75,6 +74,8 @@ public class GameActivity extends AppCompatActivity {
 
         board.setAvailableJumps(jumps);
         if (board.isEndTurn()) Toast.makeText(this, "No moves available!", Toast.LENGTH_SHORT).show();
+
+        saveGameState();
     }
 
     public void revert(View btn) {
