@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    >
 
     <Button
         android:id="@+id/new_game_btn"
-        style="@style/regularButtonStyle"
+        style="@style/menuButtonStyle"
         android:onClick="newGame"
         android:text="@string/new_game"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,10 +19,11 @@
 
     <Button
         android:id="@+id/resume_game_btn"
-        style="@style/regularButtonStyle"
+        style="@style/menuButtonStyle"
         android:onClick="resumeGame"
         android:text="@string/resume_game"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_game_btn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
