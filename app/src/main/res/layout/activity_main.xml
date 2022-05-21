@@ -8,10 +8,9 @@
 
     <Button
         android:id="@+id/new_game_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/regularButtonStyle"
         android:onClick="newGame"
-        android:text="new game"
+        android:text="@string/new_game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,10 +18,9 @@
 
     <Button
         android:id="@+id/resume_game_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/regularButtonStyle"
         android:onClick="resumeGame"
-        android:text="resume game"
+        android:text="@string/resume_game"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_game_btn" />
