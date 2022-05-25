@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Stack;
 import java.util.StringJoiner;
 
-public class GameBoard extends Board {
+public class GameBoard extends SmartBoard {
 
     Boolean whitesTurn = null;
     ArrayList<Integer> jumps;

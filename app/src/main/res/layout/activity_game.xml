@@ -18,10 +18,9 @@
 
     <Button
         android:id="@+id/roller"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/regularButtonStyle"
         android:onClick="roll"
-        android:text="ROLL!"
+        android:text="@string/roll"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/container"
@@ -47,20 +46,18 @@
 
     <Button
         android:id="@+id/revert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/regularButtonStyle"
         android:onClick="revert"
-        android:text="revert"
+        android:text="@string/revert"
         app:layout_constraintBottom_toTopOf="@+id/roller"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/container" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/regularButtonStyle"
         android:onClick="homeClick"
-        android:text="home"
+        android:text="בית"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/container"
         app:layout_constraintTop_toBottomOf="@+id/hometext" />

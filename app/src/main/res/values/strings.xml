@@ -3,4 +3,5 @@
     <string name="roll">הטל</string>
     <string name="new_game">משחק חדש</string>
     <string name="resume_game">המשך לשחק</string>
+    <string name="revert">בטל מהלך</string>
 </resources>
