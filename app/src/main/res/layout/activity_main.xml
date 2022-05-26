@@ -4,26 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    >
+    android:background="@drawable/background_gradient"
+    tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/new_game_btn"
-        style="@style/menuButtonStyle"
-        android:onClick="newGame"
-        android:text="@string/new_game"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp">
 
-    <Button
-        android:id="@+id/resume_game_btn"
-        style="@style/menuButtonStyle"
-        android:onClick="resumeGame"
-        android:text="@string/resume_game"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_game_btn" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginBottom="20dp"
+            app:srcCompat="@drawable/text_logo" />
+
+        <Button
+            android:id="@+id/new_game_btn"
+            style="@style/menuButtonStyle"
+            android:onClick="newGame"
+            android:text="@string/new_game" />
+
+        <Button
+            android:id="@+id/resume_game_btn"
+            style="@style/menuButtonStyle"
+            android:layout_marginTop="8dp"
+            android:onClick="resumeGame"
+            android:text="@string/resume_game" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
