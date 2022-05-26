@@ -15,6 +15,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GameStateStorage.loadDatabase(this);
+
+        findViewById(R.id.new_game_btn)
+                .setOnLongClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, GameActivity.class);
+            intent.putExtra("hack", true);
+            startActivity(intent);
+            return true;
+        });
     }
 
     @Override

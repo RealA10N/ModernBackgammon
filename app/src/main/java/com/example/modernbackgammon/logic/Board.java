@@ -5,13 +5,17 @@ import java.util.Locale;
 public class Board {
 
     static final int[] initial = { -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2 };
+    static final int[] hack = { 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, -2, -2 };
     protected Triangle[] triangles;
     public Triangle whiteHome, blackHome, whiteEnd, blackEnd;
 
-    public Board() {
-        triangles = new Triangle[initial.length];
-        for (int i = 0; i < initial.length; i++) {
-            triangles[i] = new Triangle(initial[i]);
+    public Board() { this(false); }
+    public Board(boolean hack) {
+        int[] values = (hack? Board.hack : Board.initial);
+        triangles = new Triangle[values.length];
+
+        for (int i = 0; i < values.length; i++) {
+            triangles[i] = new Triangle(values[i]);
         }
 
         whiteHome = new Triangle(0);

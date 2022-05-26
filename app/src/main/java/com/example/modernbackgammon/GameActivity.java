@@ -3,7 +3,6 @@ package com.example.modernbackgammon;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +28,9 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        buildActivity();
+
+        boolean hack = getIntent().getBooleanExtra("hack", false);
+        buildActivity(hack);
     }
 
     @Override
@@ -38,8 +39,11 @@ public class GameActivity extends AppCompatActivity {
         buildActivity();
     }
 
-    protected void buildActivity() {
-        board = GameStateStorage.loadGameBoard(new GameActivityUpdateHook(this));
+    protected void buildActivity() { buildActivity(false); }
+
+    protected void buildActivity(boolean hack) {
+        if (hack) board = new GameBoard(new GameActivityUpdateHook(this), true);
+        else board = GameStateStorage.loadGameBoard(new GameActivityUpdateHook(this));
         displayBoard = new BoardDesign(this, board);
         container = findViewById(R.id.container);
         container.addView(displayBoard);
@@ -99,19 +103,13 @@ public class GameActivity extends AppCompatActivity {
         dialog.show();
 
         TextView title = dialog.findViewById(R.id.end_game_dialog_winner);
-        title.setText((board.isWhiteWin()? "White" : "Black"));
+        title.setText((board.isWhiteWin()? R.string.white : R.string.black));
 
         Button home = dialog.findViewById(R.id.end_game_dialog_home_btn);
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { finish(); dialog.dismiss(); }
-        });
+        home.setOnClickListener(v -> { finish(); dialog.dismiss(); });
 
         Button newgame = dialog.findViewById(R.id.end_game_new_game_btn);
-        newgame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { onRestart(); dialog.dismiss(); }
-        });
+        newgame.setOnClickListener(v -> { onRestart(); dialog.dismiss(); });
     }
 
 }

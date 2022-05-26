@@ -16,6 +16,13 @@ public class GameBoard extends SmartBoard {
     Stack<GameMoveRecordGroup> movesStack;
     Hook updateHook;
 
+    public GameBoard(Hook updateHook, boolean hack) {
+        super(hack);
+        this.updateHook = updateHook;
+        movesStack = new Stack<>();
+        jumps = new ArrayList<>();
+    }
+
     public GameBoard(Hook updateHook) {
         super();
         this.updateHook = updateHook;
@@ -27,7 +34,7 @@ public class GameBoard extends SmartBoard {
         this(updateHook);
         String[] sections = repr.split("!");
 
-        whitesTurn = (sections[0] == "1" ? true : false);
+        whitesTurn = (sections[0].equals("1") ? true : false);
 
         int i = 0;
         for (String s : sections[1].split(",")) {
