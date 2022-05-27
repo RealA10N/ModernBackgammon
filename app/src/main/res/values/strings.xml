@@ -8,4 +8,7 @@
     <string name="the_winner_is">והמנצח הוא...</string>
     <string name="black">שחור</string>
     <string name="white">לבן</string>
+    <string name="select_game_mode">בחר מצב משחק</string>
+    <string name="pvp">שני שחקנים</string>
+    <string name="pvai">נגד המחשב</string>
 </resources>
