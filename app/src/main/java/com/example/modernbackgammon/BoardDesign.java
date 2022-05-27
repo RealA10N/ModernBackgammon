@@ -34,7 +34,7 @@ public class BoardDesign extends View {
     public BoardDesign(Context context, GameBoard board) {
         super(context);
         this.board = board;
-        background = BitmapFactory.decodeResource(getResources(), R.drawable.gameboard);
+        background = BitmapFactory.decodeResource(getResources(), R.drawable.board);
         blackChip = BitmapFactory.decodeResource(getResources(), R.drawable.default_black_chip);
         whiteChip = BitmapFactory.decodeResource(getResources(), R.drawable.default_red_chip);
         // highlight: TODO
