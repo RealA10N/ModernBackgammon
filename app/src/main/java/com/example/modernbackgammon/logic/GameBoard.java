@@ -146,6 +146,8 @@ public class GameBoard extends SmartBoard {
         return moves;
     }
 
+
+    public boolean canRevertMove() { return !movesStack.empty(); }
     public boolean revertMove() {
         if (movesStack.empty()) return false;
         movesStack.pop().revertMoves(jumps);

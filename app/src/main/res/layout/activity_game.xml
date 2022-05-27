@@ -16,16 +16,6 @@
 
     </FrameLayout>
 
-    <Button
-        android:id="@+id/roller"
-        style="@style/regularButtonStyle"
-        android:onClick="roll"
-        android:text="@string/roll"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/container"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/dicetext"
         android:layout_width="wrap_content"
@@ -33,7 +23,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/container"
-        app:layout_constraintTop_toBottomOf="@+id/roller" />
+        app:layout_constraintTop_toBottomOf="@+id/icons" />
 
     <TextView
         android:id="@+id/hometext"
@@ -45,15 +35,6 @@
         app:layout_constraintTop_toBottomOf="@+id/dicetext" />
 
     <Button
-        android:id="@+id/revert"
-        style="@style/regularButtonStyle"
-        android:onClick="revert"
-        android:text="@string/revert"
-        app:layout_constraintBottom_toTopOf="@+id/roller"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/container" />
-
-    <Button
         android:id="@+id/button2"
         style="@style/regularButtonStyle"
         android:onClick="homeClick"
@@ -61,5 +42,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/container"
         app:layout_constraintTop_toBottomOf="@+id/hometext" />
+
+    <LinearLayout
+        android:id="@+id/icons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/container"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/roll_icon"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_margin="10dp"
+            android:onClick="roll"
+            app:srcCompat="@drawable/dice_button_selector"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageView
+            android:id="@+id/home_icon"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_margin="10dp"
+            android:onClick="goToHome"
+            app:srcCompat="@drawable/home_icon"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageView
+            android:id="@+id/undo_icon"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_margin="10dp"
+            android:onClick="revert"
+            app:srcCompat="@drawable/undo_button_selector"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

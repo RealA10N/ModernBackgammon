@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +51,7 @@ public class GameActivity extends AppCompatActivity {
         update();
     }
 
-    public void roll(View btn) {
+    public void roll(View view) {
         Random rnd = new Random();
         int a = 1+rnd.nextInt(6), b= 1+rnd.nextInt(6);
         board.flipTurn();
@@ -66,7 +67,7 @@ public class GameActivity extends AppCompatActivity {
         GameStateStorage.storeGameBoardState(board);
     }
 
-    public void revert(View btn) {
+    public void revert(View view) {
         if (!board.revertMove()) Toast.makeText(this, "No moves to revert!", Toast.LENGTH_SHORT).show();
         update();
     }
@@ -77,7 +78,8 @@ public class GameActivity extends AppCompatActivity {
 
     public void update() {
         displayBoard.invalidate();
-        Button roll = findViewById(R.id.roller);
+
+        ImageView roll = findViewById(R.id.roll_icon);
         roll.setEnabled(board.isEndTurn());
 
         TextView house = findViewById(R.id.hometext);
@@ -89,6 +91,9 @@ public class GameActivity extends AppCompatActivity {
             s += String.format("%d ", jump);
         }
         text.setText(s);
+
+        ImageView undo = findViewById(R.id.undo_icon);
+        undo.setEnabled(board.canRevertMove());
 
         displayBoard.setEnabled(!board.isEndTurn());
         if (board.isEndGame()) onGameEnd();
@@ -111,5 +116,7 @@ public class GameActivity extends AppCompatActivity {
         Button newgame = dialog.findViewById(R.id.end_game_new_game_btn);
         newgame.setOnClickListener(v -> { onRestart(); dialog.dismiss(); });
     }
+
+    public void goToHome(View view) { finish(); }
 
 }
