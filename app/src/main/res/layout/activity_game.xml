@@ -27,9 +27,10 @@
         app:layout_constraintTop_toBottomOf="@+id/icons" />
 
     <TextView
-        android:id="@+id/hometext"
+        android:id="@+id/eaten_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik_regular"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.545"
@@ -37,13 +38,13 @@
         app:layout_constraintTop_toBottomOf="@+id/dice_table" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/special_triangle_button"
         style="@style/regularButtonStyle"
         android:onClick="homeClick"
         android:text="בית"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/container"
-        app:layout_constraintTop_toBottomOf="@+id/hometext" />
+        app:layout_constraintTop_toBottomOf="@+id/eaten_text" />
 
     <LinearLayout
         android:id="@+id/icons"

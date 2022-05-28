@@ -107,8 +107,15 @@ public class GameActivity extends AppCompatActivity {
         TextView text = findViewById(R.id.whos_turn_text);
         text.setText(board.isWhitesTurn()? R.string.white_turn : R.string.black_turn);
 
-        TextView house = findViewById(R.id.hometext);
-        house.setText(String.format("Eaten: %d whites, %d blacks", board.countHomeWhites(), board.countHomeBlacks()));
+        TextView eaten = findViewById(R.id.eaten_text);
+        String eaten_text = "";
+        if (board.countHomeBlacks() > 0)
+            eaten_text += getString(R.string.x_black_eaten, board.countHomeBlacks()) + "\n";
+        if (board.countHomeWhites() > 0)
+            eaten_text += getString(R.string.x_white_eaten, board.countHomeWhites()) + "\n";
+
+        eaten.setText(eaten_text);
+        eaten.setVisibility((eaten_text.isEmpty()? View.INVISIBLE : View.VISIBLE));
 
         // dice
 
