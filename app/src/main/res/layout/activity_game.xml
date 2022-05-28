@@ -17,9 +17,10 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/dicetext"
+        android:id="@+id/whos_turn_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik_black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/container"
@@ -31,8 +32,9 @@
         android:layout_height="wrap_content"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toEndOf="@+id/container"
-        app:layout_constraintTop_toBottomOf="@+id/dicetext" />
+        app:layout_constraintTop_toBottomOf="@+id/dice_table" />
 
     <Button
         android:id="@+id/button2"
@@ -80,5 +82,13 @@
             app:srcCompat="@drawable/undo_button_selector"
             tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/dice_table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/container"
+        app:layout_constraintTop_toBottomOf="@+id/whos_turn_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

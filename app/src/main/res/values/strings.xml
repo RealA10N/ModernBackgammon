@@ -11,4 +11,7 @@
     <string name="select_game_mode">בחר מצב משחק</string>
     <string name="pvp">שני שחקנים</string>
     <string name="pvai">נגד המחשב</string>
+    <string name="white_turn">תור הלבן</string>
+    <string name="black_turn">תור השחור</string>
+    <string name="no_available_moves">נחסם!</string>
 </resources>

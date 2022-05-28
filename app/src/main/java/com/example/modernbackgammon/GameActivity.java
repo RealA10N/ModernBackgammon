@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,9 @@ public class GameActivity extends AppCompatActivity {
     protected BoardDesign displayBoard;
     protected FrameLayout container;
 
+    ArrayList<Integer> allJumps;
+    int[] diceImageDrawables;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +37,15 @@ public class GameActivity extends AppCompatActivity {
 
         boolean hack = getIntent().getBooleanExtra("hack", false);
         buildActivity(hack);
+
+        diceImageDrawables = new int[]{
+            R.drawable.die1,
+            R.drawable.die2,
+            R.drawable.die3,
+            R.drawable.die4,
+            R.drawable.die5,
+            R.drawable.die6,
+        };
     }
 
     @Override
@@ -48,6 +62,7 @@ public class GameActivity extends AppCompatActivity {
         displayBoard = new BoardDesign(this, board);
         container = findViewById(R.id.container);
         container.addView(displayBoard);
+        allJumps = new ArrayList<>();
         update();
     }
 
@@ -56,19 +71,19 @@ public class GameActivity extends AppCompatActivity {
         int a = 1+rnd.nextInt(6), b= 1+rnd.nextInt(6);
         board.flipTurn();
 
-        ArrayList<Integer> jumps = new ArrayList<>();
+        allJumps = new ArrayList<>();
         for (int i=0; i <= (a==b? 1 : 0); i++) {
-            jumps.add(a); jumps.add(b);
+            allJumps.add(a); allJumps.add(b);
         }
 
-        board.setAvailableJumps(jumps);
-        if (board.isEndTurn()) Toast.makeText(this, "No moves available!", Toast.LENGTH_SHORT).show();
+        board.setAvailableJumps(allJumps);
+        if (board.isEndTurn()) Toast.makeText(this, R.string.no_available_moves, Toast.LENGTH_SHORT).show();
 
         GameStateStorage.storeGameBoardState(board);
     }
 
     public void revert(View view) {
-        if (!board.revertMove()) Toast.makeText(this, "No moves to revert!", Toast.LENGTH_SHORT).show();
+        board.revertMove();
         update();
     }
 
@@ -79,21 +94,46 @@ public class GameActivity extends AppCompatActivity {
     public void update() {
         displayBoard.invalidate();
 
+        // icons
+
         ImageView roll = findViewById(R.id.roll_icon);
         roll.setEnabled(board.isEndTurn());
+
+        ImageView undo = findViewById(R.id.undo_icon);
+        undo.setEnabled(board.canRevertMove());
+
+        // text
+
+        TextView text = findViewById(R.id.whos_turn_text);
+        text.setText(board.isWhitesTurn()? R.string.white_turn : R.string.black_turn);
 
         TextView house = findViewById(R.id.hometext);
         house.setText(String.format("Eaten: %d whites, %d blacks", board.countHomeWhites(), board.countHomeBlacks()));
 
-        TextView text = findViewById(R.id.dicetext);
-        String s = (board.isWhitesTurn()? "Whites" : "Blacks") + " move ";
-        for (int jump : board.getAvailableJumps()) {
-            s += String.format("%d ", jump);
-        }
-        text.setText(s);
+        // dice
 
-        ImageView undo = findViewById(R.id.undo_icon);
-        undo.setEnabled(board.canRevertMove());
+        TableLayout table = findViewById(R.id.dice_table);
+        table.removeAllViews();
+
+        final int DICE_IN_ROW = 2;
+        float dp = getResources().getDisplayMetrics().density;
+        int rows = (allJumps.size()+(DICE_IN_ROW-1)) / DICE_IN_ROW;
+
+        for (int r=0; r<rows; r++) {
+            TableRow row = new TableRow(this);
+            table.addView(row);
+            for (int i = r*DICE_IN_ROW; i<Math.min((r+1)*DICE_IN_ROW, allJumps.size()); i++) {
+                int v = allJumps.get(i);
+                ImageView img = new ImageView(this);
+                img.setImageResource(diceImageDrawables[v-1]);
+                img.setLayoutParams(new TableRow.LayoutParams((int)(72*dp),(int)(72*dp)));
+                row.addView(img);
+            }
+        }
+//
+//        for (int jump : board.getAvailableJumps()) {
+//
+//        }
 
         displayBoard.setEnabled(!board.isEndTurn());
         if (board.isEndGame()) onGameEnd();
