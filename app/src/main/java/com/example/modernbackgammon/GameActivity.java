@@ -35,17 +35,17 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        diceImageDrawables = new int[]{
+                R.drawable.die1,
+                R.drawable.die2,
+                R.drawable.die3,
+                R.drawable.die4,
+                R.drawable.die5,
+                R.drawable.die6,
+        };
+
         boolean hack = getIntent().getBooleanExtra("hack", false);
         buildActivity(hack);
-
-        diceImageDrawables = new int[]{
-            R.drawable.die1,
-            R.drawable.die2,
-            R.drawable.die3,
-            R.drawable.die4,
-            R.drawable.die5,
-            R.drawable.die6,
-        };
     }
 
     @Override
@@ -62,7 +62,7 @@ public class GameActivity extends AppCompatActivity {
         displayBoard = new BoardDesign(this, board);
         container = findViewById(R.id.container);
         container.addView(displayBoard);
-        allJumps = new ArrayList<>();
+        allJumps = board.getAvailableJumps();
         update();
     }
 
@@ -130,10 +130,6 @@ public class GameActivity extends AppCompatActivity {
                 row.addView(img);
             }
         }
-//
-//        for (int jump : board.getAvailableJumps()) {
-//
-//        }
 
         displayBoard.setEnabled(!board.isEndTurn());
         if (board.isEndGame()) onGameEnd();
