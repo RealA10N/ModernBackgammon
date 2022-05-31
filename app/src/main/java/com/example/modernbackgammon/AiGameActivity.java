@@ -2,11 +2,14 @@ package com.example.modernbackgammon;
 
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.modernbackgammon.general.GameActivityUpdateHook;
 import com.example.modernbackgammon.general.GameStateStorage;
+import com.example.modernbackgammon.logic.GameMoveRecordGroup;
 import com.example.modernbackgammon.logic.SmartBoard;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AiGameActivity extends GameActivity {
 
@@ -25,6 +28,8 @@ public class AiGameActivity extends GameActivity {
     @Override
     public void update() {
         super.update();
+
+        displayBoard.setEnabled(board.isWhitesTurn() && !board.isEndTurn());
 
         // roll icon
         ImageView roll = findViewById(R.id.roll_icon);
@@ -45,10 +50,27 @@ public class AiGameActivity extends GameActivity {
         update();
     }
 
+    protected void applyMoveGroupAnimation(GameMoveRecordGroup group) {
+        final int TIME_INTERVAL = 750;
+
+        for (int i = 1; i <= group.size(); i++) {
+            int moveIndex = i - 1;
+            new Timer().schedule(new TimerTask() {
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            group.applyMove(moveIndex, board.jumps);
+                            update();
+                        }
+                    });
+                }
+            }, i * TIME_INTERVAL);
+        }
+    }
+
     public void playAsAI() {
-        Toast.makeText(this, "Thinking...", Toast.LENGTH_SHORT).show();
         SmartBoard board = (SmartBoard) this.board;
-        board.playBestMove();
+        applyMoveGroupAnimation(board.bestScoreMove());
         update();
     }
 

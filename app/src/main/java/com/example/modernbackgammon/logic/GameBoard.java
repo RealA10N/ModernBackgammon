@@ -12,7 +12,7 @@ import java.util.StringJoiner;
 public class GameBoard extends Board {
 
     Boolean whitesTurn = null;
-    ArrayList<Integer> jumps;
+    public ArrayList<Integer> jumps;
     Stack<GameMoveRecordGroup> movesStack;
     Hook updateHook;
 

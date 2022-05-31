@@ -21,7 +21,11 @@ public class GameMoveRecordGroup {
 
     void pop() { records.remove(records.size()-1); }
     void multipop(int n) { for(int i=0; i<n; i++) pop(); }
-    int size() { return records.size(); }
+    public int size() { return records.size(); }
+
+    public void applyMove(int i, ArrayList<Integer> jumps) {
+        records.get(i).applyMove(jumps);
+    }
 
     public void applyMoves(ArrayList<Integer> jumps) {
         for (GameMoveRecord record : records)
