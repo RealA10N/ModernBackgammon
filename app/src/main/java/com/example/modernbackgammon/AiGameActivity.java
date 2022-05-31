@@ -42,7 +42,7 @@ public class AiGameActivity extends GameActivity {
         // roll icon
         ImageView roll = findViewById(R.id.roll_icon);
         roll.setImageResource(
-            (board.isWhitesTurn()?
+            (board.isWhitesTurn() || board.isEndTurn()?
                 R.drawable.circle_button_selector :
                 R.drawable.dice_button_selector)
         );

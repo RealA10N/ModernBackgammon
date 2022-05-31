@@ -16,7 +16,12 @@ public class SmartBoard extends GameBoard {
 
     // ----------------------------------- STATE EVALUATION ------------------------------------ //
 
-    public static final int SINGLE_SCORE_PENALTY = 3;
+    public static final int SINGLE_SCORE_PENALTY = 2;
+    public static final int HOUSE_MOTIVATION = 2;
+    public static final int OUTSIDE_MOTIVATION = 8;
+    public static final int LAST_QUARTER_PENALTY = 2;
+    public static final int LAST_EIGHTH_PENALTY = 2;
+    public static final int TALL_HOUSE_PENALTY = 2;
 
     public int calculateScore() {
         // Positive score : white winning
@@ -29,9 +34,18 @@ public class SmartBoard extends GameBoard {
         int sum = 0;
         for (int i = 0; i < triangles.length; i++) {
             sum += triangles[i].countBlackCheckers() * (triangles.length - i);
+            sum += triangles[i].countBlackCheckers() * (triangles.length - i);
             if (triangles[i].countBlackCheckers() == 1) sum += SINGLE_SCORE_PENALTY;
+            if (triangles[i].isBlackHouse()) sum -= HOUSE_MOTIVATION;
+            if (triangles[i].countBlackCheckers() > 3) sum += TALL_HOUSE_PENALTY;
         }
+
+        for (int i=0; i<BOARD_SIZE/4; i++)
+            sum += triangles[i].countBlackCheckers() * LAST_QUARTER_PENALTY;
+        for (int i=0; i<BOARD_SIZE/8; i++)
+            sum += triangles[i].countBlackCheckers() * LAST_EIGHTH_PENALTY;
         sum += triangles.length * blackHome.countCheckers();
+        sum -= blackEnd.countBlackCheckers() * OUTSIDE_MOTIVATION;
         return sum;
     }
 
@@ -39,9 +53,17 @@ public class SmartBoard extends GameBoard {
         int sum = 0;
         for (int i = 0; i < triangles.length; i++) {
             sum += triangles[i].countWhiteCheckers() * (i + 1);
+            sum += triangles[i].countWhiteCheckers() * (i + 1);
             if (triangles[i].countWhiteCheckers() == 1) sum += SINGLE_SCORE_PENALTY;
+            if (triangles[i].isWhiteHouse()) sum -= HOUSE_MOTIVATION;
+            if (triangles[i].countWhiteCheckers() > 3) sum += TALL_HOUSE_PENALTY;
         }
+        for (int i=0; i<BOARD_SIZE/4; i++)
+            sum += triangles[BOARD_SIZE-i-1].countWhiteCheckers() * LAST_QUARTER_PENALTY;
+        for (int i=0; i<BOARD_SIZE/8; i++)
+            sum += triangles[BOARD_SIZE-i-1].countWhiteCheckers() * LAST_EIGHTH_PENALTY;
         sum += triangles.length * whiteHome.countCheckers();
+        sum -= blackEnd.countWhiteCheckers() * OUTSIDE_MOTIVATION;
         return sum;
     }
 
@@ -92,10 +114,6 @@ public class SmartBoard extends GameBoard {
         }
 
         return ans;
-    }
-
-    public void playBestMove() {
-        bestScoreMove().applyMoves(jumps);
     }
 
 }
