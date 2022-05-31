@@ -10,16 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ModernBackgammon">
         <activity
+            android:name=".AiGameActivity"
+            android:exported="false" />
+        <activity
             android:name=".GameActivity"
             android:exported="false"
-            android:screenOrientation="sensorLandscape"
-        />
+            android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

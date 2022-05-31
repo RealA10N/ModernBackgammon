@@ -1,5 +1,7 @@
 package com.example.modernbackgammon.logic;
 
+import java.util.Objects;
+
 public class Triangle {
     /*
      * A point (triangle) in backgammon is represented as a single integer. if
@@ -15,6 +17,7 @@ public class Triangle {
     public Triangle(int initial) {
         value = initial;
     }
+    public Triangle(Triangle t) { value = t.value; }
 
     @Override
     public String toString() {
@@ -28,6 +31,19 @@ public class Triangle {
 
     public String repr() {
         return Integer.toString(value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Triangle triangle = (Triangle) o;
+        return value == triangle.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 
     public void clear() { value = 0; }

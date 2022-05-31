@@ -36,12 +36,12 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         diceImageDrawables = new int[]{
-                R.drawable.die1,
-                R.drawable.die2,
-                R.drawable.die3,
-                R.drawable.die4,
-                R.drawable.die5,
-                R.drawable.die6,
+            R.drawable.die1,
+            R.drawable.die2,
+            R.drawable.die3,
+            R.drawable.die4,
+            R.drawable.die5,
+            R.drawable.die6,
         };
 
         boolean hack = getIntent().getBooleanExtra("hack", false);
@@ -57,6 +57,7 @@ public class GameActivity extends AppCompatActivity {
     protected void buildActivity() { buildActivity(false); }
 
     protected void buildActivity(boolean hack) {
+        GameStateStorage.storeGameMode(false);
         if (hack) board = new GameBoard(new GameActivityUpdateHook(this), true);
         else board = GameStateStorage.loadGameBoard(new GameActivityUpdateHook(this));
         displayBoard = new BoardDesign(this, board);

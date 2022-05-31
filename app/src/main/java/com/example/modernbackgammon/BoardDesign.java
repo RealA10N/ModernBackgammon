@@ -3,6 +3,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -76,6 +77,7 @@ public class BoardDesign extends View {
             } else {
                 // if a start of a new move
                 last_touch_down = time;
+
                 if (board.isWhitesTurn() && triangle.hasWhiteCheckers()) {
                     movingChip = whiteChip;
                     move = new GameMove(triangle, null);
@@ -154,7 +156,7 @@ public class BoardDesign extends View {
 
     private void drawHighlights(Canvas canvas) {
         if (move == null || move.from == null) return;
-        canvas.drawBitmap(whiteChip, 100,100,null);
+        // canvas.drawBitmap(whiteChip, 100,100,null);
         // highlight: TODO
     }
 

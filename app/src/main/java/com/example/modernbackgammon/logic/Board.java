@@ -4,6 +4,7 @@ import java.util.Locale;
 
 public class Board {
 
+    public static final int BOARD_SIZE = 24;
     static final int[] initial = { -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2 };
     static final int[] hack = { 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, -2, -2 };
     protected Triangle[] triangles;

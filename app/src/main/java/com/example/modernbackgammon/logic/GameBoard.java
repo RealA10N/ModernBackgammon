@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Stack;
 import java.util.StringJoiner;
 
-public class GameBoard extends SmartBoard {
+public class GameBoard extends Board {
 
     Boolean whitesTurn = null;
     ArrayList<Integer> jumps;
@@ -109,7 +109,7 @@ public class GameBoard extends SmartBoard {
     public ArrayList<Integer> getAvailableJumps() { return new ArrayList<>(jumps); }
 
     @NonNull
-    private HashMap<GameMove, Integer> getAvailableMoves() {
+    protected HashMap<GameMove, Integer> getAvailableMoves() {
         HashMap<GameMove, Integer> moves = new HashMap<>();
 
         Triangle end, home; int starti, delta, endi;
@@ -155,10 +155,10 @@ public class GameBoard extends SmartBoard {
         return true;
     }
 
-    public boolean applyMove(@NonNull GameMove move) {
+    public GameMoveRecordGroup applyMove(@NonNull GameMove move) {
         HashMap<GameMove, Integer> available = getAvailableMoves();
         Integer jump = available.get(move);
-        if (jump == null) return false;
+        if (jump == null) return null;
 
         GameMoveRecordGroup movesGroup = new GameMoveRecordGroup();
 
@@ -172,7 +172,7 @@ public class GameBoard extends SmartBoard {
         movesGroup.applyMoves(jumps);
         movesStack.push(movesGroup);
         updateHook.trigger();
-        return true;
+        return movesGroup;
     }
 
 }

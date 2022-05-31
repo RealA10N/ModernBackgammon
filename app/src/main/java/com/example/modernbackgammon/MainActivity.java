@@ -60,9 +60,7 @@ public class MainActivity extends AppCompatActivity {
         btn = dialog.findViewById(R.id.pvai_button);
         btn.setOnClickListener(v -> {
             GameStateStorage.resetGameBoardState();
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("pvai", true);
-            Toast.makeText(this, "AI not yet implemented. Proceeding with local PvP.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, AiGameActivity.class);
             dialog.dismiss();
             startActivity(intent);
         });
