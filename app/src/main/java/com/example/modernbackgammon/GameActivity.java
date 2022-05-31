@@ -126,16 +126,25 @@ public class GameActivity extends AppCompatActivity {
         final int DICE_IN_ROW = 2;
         float dp = getResources().getDisplayMetrics().density;
         int rows = (allJumps.size()+(DICE_IN_ROW-1)) / DICE_IN_ROW;
+        ArrayList<Integer> availableJumps = board.getAvailableJumps();
 
         for (int r=0; r<rows; r++) {
             TableRow row = new TableRow(this);
             table.addView(row);
             for (int i = r*DICE_IN_ROW; i<Math.min((r+1)*DICE_IN_ROW, allJumps.size()); i++) {
-                int v = allJumps.get(i);
+                Integer v = allJumps.get(i);
                 ImageView img = new ImageView(this);
                 img.setImageResource(diceImageDrawables[v-1]);
                 img.setLayoutParams(new TableRow.LayoutParams((int)(72*dp),(int)(72*dp)));
                 row.addView(img);
+
+                if (availableJumps.contains(v)) {
+                    availableJumps.remove(v);
+                    img.setImageAlpha(255);
+                } else {
+                    img.setImageAlpha(100);
+                }
+
             }
         }
 
