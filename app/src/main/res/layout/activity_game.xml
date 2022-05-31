@@ -16,82 +16,76 @@
 
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/whos_turn_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/rubik_black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/container"
-        app:layout_constraintTop_toBottomOf="@+id/icons" />
-
-    <TextView
-        android:id="@+id/eaten_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/rubik_regular"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintStart_toEndOf="@+id/container"
-        app:layout_constraintTop_toBottomOf="@+id/dice_table" />
-
-    <Button
-        android:id="@+id/special_triangle_button"
-        style="@style/regularButtonStyle"
-        android:onClick="homeClick"
-        android:text="בית"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/container"
-        app:layout_constraintTop_toBottomOf="@+id/eaten_text" />
-
     <LinearLayout
-        android:id="@+id/icons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:orientation="horizontal"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/container"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/roll_icon"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_margin="10dp"
-            android:onClick="roll"
-            app:srcCompat="@drawable/dice_button_selector"
-            tools:ignore="SpeakableTextPresentCheck" />
+        <LinearLayout
+            android:id="@+id/icons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/home_icon"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_margin="10dp"
-            android:onClick="goToHome"
-            app:srcCompat="@drawable/home_icon"
-            tools:ignore="SpeakableTextPresentCheck" />
+            <ImageView
+                android:id="@+id/roll_icon"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="10dp"
+                android:onClick="roll"
+                app:srcCompat="@drawable/dice_button_selector"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-        <ImageView
-            android:id="@+id/undo_icon"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_margin="10dp"
-            android:onClick="revert"
-            app:srcCompat="@drawable/undo_button_selector"
-            tools:ignore="SpeakableTextPresentCheck" />
+            <ImageView
+                android:id="@+id/home_icon"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="10dp"
+                android:onClick="goToHome"
+                app:srcCompat="@drawable/home_icon"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <ImageView
+                android:id="@+id/undo_icon"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="10dp"
+                android:onClick="revert"
+                app:srcCompat="@drawable/undo_button_selector"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/whos_turn_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_black"
+            android:textSize="24sp" />
+
+        <TableLayout
+            android:id="@+id/dice_table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/eaten_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_regular"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/special_triangle_button"
+            style="@style/regularButtonStyle"
+            android:onClick="homeClick"
+            android:text="בית" />
     </LinearLayout>
-
-    <TableLayout
-        android:id="@+id/dice_table"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/container"
-        app:layout_constraintTop_toBottomOf="@+id/whos_turn_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
