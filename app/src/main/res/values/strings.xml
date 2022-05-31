@@ -13,6 +13,8 @@
     <string name="pvai">נגד המחשב</string>
     <string name="white_turn">תור הלבן</string>
     <string name="black_turn">תור השחור</string>
+    <string name="your_turn">תורך (הלבן)</string>
+    <string name="opponent_turn">תור היריב (שחור)</string>
     <string name="no_available_moves">נחסם!</string>
     <string name="x_black_eaten">לשחור %d אכולים</string>
     <string name="x_white_eaten">ללבן %d אכולים</string>

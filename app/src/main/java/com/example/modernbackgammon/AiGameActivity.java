@@ -1,7 +1,9 @@
 package com.example.modernbackgammon;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.modernbackgammon.general.GameActivityUpdateHook;
 import com.example.modernbackgammon.general.GameStateStorage;
@@ -12,6 +14,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class AiGameActivity extends GameActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (board.isBlacksTurn()) playAsAI();
+    }
 
     @Override
     protected void buildActivity(boolean hack) {
@@ -42,6 +50,10 @@ public class AiGameActivity extends GameActivity {
         // undo icon
         ImageView undo = findViewById(R.id.undo_icon);
         if (board.isBlacksTurn()) undo.setEnabled(false);
+
+        // whos turn text
+        TextView text = findViewById(R.id.whos_turn_text);
+        text.setText(board.isWhitesTurn()? R.string.your_turn : R.string.opponent_turn);
     }
 
     public void roll(View view) {
